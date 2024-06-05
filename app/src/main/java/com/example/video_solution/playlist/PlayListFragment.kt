@@ -22,7 +22,7 @@ class PlayListFragment : Fragment() {
 
     private lateinit var viewModelFactory: PlaylistViewModelFactory
     private lateinit var viewModel: PlayListViewModel
-
+    private val service = PlayListService(PlayListApi())
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +39,7 @@ class PlayListFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        viewModelFactory = PlaylistViewModelFactory(PlaylistRepository())
+        viewModelFactory = PlaylistViewModelFactory(PlaylistRepository(service))
         viewModel = ViewModelProvider(this,viewModelFactory)[PlayListViewModel::class.java]
     }
 

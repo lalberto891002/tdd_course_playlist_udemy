@@ -42,7 +42,7 @@ class PlayListFeature {
             .check(matches(isDisplayed()))
 
         onView(allOf(withId(R.id.list_category), isDescendantOfA(nthChildOf(withId(R.id.list),0))))
-            .check(matches(withText("Rock")))
+            .check(matches(withText("rock")))
             .check(matches(isDisplayed()))
 
         onView(allOf(withId(R.id.playlist_image), isDescendantOfA(nthChildOf(withId(R.id.list),0))))

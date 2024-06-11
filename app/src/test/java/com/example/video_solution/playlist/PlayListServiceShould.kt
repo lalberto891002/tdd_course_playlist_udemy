@@ -23,7 +23,7 @@ class PlayListServiceShould: BaseUnitTest(){
 
         service.fetchPlayLists().first()
 
-        verify(playlistApi,times(1)).fetchAllPlaylists()
+        verify(playlistApi,times(1)).fetchAllPlaylists()//to verify the api call
     }
 
     @Test
@@ -34,7 +34,7 @@ class PlayListServiceShould: BaseUnitTest(){
         val service = PlayListService(playlistApi)
 
         val received = service.fetchPlayLists().first().getOrNull()
-
+        
         assertEquals(myPlayList,received)
     }
 
@@ -51,13 +51,13 @@ class PlayListServiceShould: BaseUnitTest(){
 
     }
 
-    private fun mockErrorValues() {
+    private fun mockErrorValues():Unit = runBlocking {
         whenever(playlistApi.fetchAllPlaylists()).thenThrow(
             RuntimeException("Oops")
         )
     }
 
-    private fun mockSuccessfulValues() {
+    private fun mockSuccessfulValues():Unit = runBlocking {
         whenever(playlistApi.fetchAllPlaylists()).thenReturn(
             myPlayList
         )

@@ -3,8 +3,9 @@ package com.example.video_solution.playlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import javax.inject.Inject
 
-class PlayListViewModel(
+class PlayListViewModel @Inject constructor(
     private val repository: PlaylistRepository
 ): ViewModel() {
 

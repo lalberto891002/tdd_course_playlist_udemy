@@ -16,7 +16,7 @@ class PlaylistModule {
     fun providePlayListApi(retrofit: Retrofit):PlayListApi =  retrofit.create(PlayListApi::class.java)
     @Provides
     fun provideRetrofit():Retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:12044/")//place the url of your server
+            .baseUrl("http://localhost:3001/")//place the url of your server
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

@@ -39,11 +39,24 @@ class PlayListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_playlist, container, false)
+        val loadDisplay = view.findViewById<View>(R.id.loadDisplay)
+        val list = view.findViewById<RecyclerView>(R.id.list)
 
         setupViewModel()
 
+        viewModel.loader.observe( this as LifecycleOwner) { loading ->
+            when (loading) {
+                    true -> loadDisplay.visibility = View.VISIBLE
+                    false -> loadDisplay.visibility = View.INVISIBLE
+                }
+        }
+
         viewModel.playlists.observe(this as LifecycleOwner) { playlists ->
-            setupList(view, playlists.getOrDefault(listOf()))
+            if(playlists.getOrNull() != null)
+                setupList(list, playlists.getOrDefault(listOf()))
+            else{
+                //todo
+            }
         }
 
         return view

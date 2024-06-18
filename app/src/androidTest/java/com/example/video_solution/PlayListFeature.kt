@@ -12,6 +12,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.internal.matcher.DrawableMatcher.Companion.withDrawable
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Description
@@ -49,6 +50,17 @@ class PlayListFeature {
             .check(matches(withDrawable(R.drawable.playlist)))
             .check(matches(isDisplayed()))
 
+    }
+
+//    @Test
+//    fun displaysLoaderWhileFetchingPlayList(){//is so fast that it is not visible the loader
+//        assertDisplayed(R.id.loadDisplay)
+//    }
+
+    @Test
+    fun hidesLoader(){
+        Thread.sleep(5000)
+        assertNotDisplayed(R.id.loadDisplay)
     }
 
     fun nthChildOf(parentMatcher: Matcher<View>, childPosition: Int): Matcher<View> {

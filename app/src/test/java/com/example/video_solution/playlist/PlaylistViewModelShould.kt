@@ -1,6 +1,7 @@
 package com.example.video_solution.playlist
 
 import com.example.video_solution.utils.BaseUnitTest
+import com.example.video_solution.utils.captureValues
 import com.example.video_solution.utils.getValueForTest
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
@@ -48,16 +49,29 @@ class PlaylistViewModelShould :BaseUnitTest(){
 
     @Test
     fun emitErrorWhenReceiveError(){
-        runBlocking {
-            whenever(repository.getPlaylists()).thenReturn(
-                flow {
-                    emit(Result.failure<List<PlayList>>(exception))
-                }
-            )
-        }
-        val viewModel = PlayListViewModel(repository)
+        val viewModel = mockErrorCase()
 
         assertEquals(exception,viewModel.playlists.getValueForTest()!!.exceptionOrNull())
+    }
+
+    @Test
+    fun showSpinnerWhileLoading() = runTest{
+        viewModel = mockSuccessfulCase()
+        viewModel.loader.captureValues{
+            viewModel.playlists.getValueForTest()
+            assertEquals(true,values[0])
+        }
+        verify(repository,times(1)).getPlaylists()
+    }
+
+    @Test
+    fun closeSpinnerAfterPalylistLoad() = runTest {
+        val viewModel = mockSuccessfulCase()
+
+        viewModel.loader.captureValues {
+            viewModel.playlists.getValueForTest()
+            assertEquals(false,values.last())
+        }
     }
 
     private fun mockSuccessfulCase(): PlayListViewModel {
@@ -68,5 +82,17 @@ class PlaylistViewModelShould :BaseUnitTest(){
                 })
         }
         return PlayListViewModel(repository)
+    }
+
+    private fun mockErrorCase(): PlayListViewModel {
+        runBlocking {
+            whenever(repository.getPlaylists()).thenReturn(
+                flow {
+                    emit(Result.failure<List<PlayList>>(exception))
+                }
+            )
+        }
+        val viewModel = PlayListViewModel(repository)
+        return viewModel
     }
 }

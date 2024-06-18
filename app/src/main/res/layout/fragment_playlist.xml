@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loadDisplay"
+        android:minHeight="40dp"
+        android:minWidth="40dp"
+        android:layout_gravity="center"
+        />
+
+<androidx.recyclerview.widget.RecyclerView
+
     android:id="@+id/list"
     android:name="com.example.video_solution.PlayListFragment"
     android:layout_width="match_parent"
@@ -11,3 +28,5 @@
     app:layoutManager="LinearLayoutManager"
     tools:context=".playlist.PlayListFragment"
     tools:listitem="@layout/playlist_item" />
+
+</LinearLayout>

@@ -17,9 +17,6 @@ import org.junit.Test
 class PlaylistViewModelShould :BaseUnitTest(){
 
     private lateinit var viewModel: PlayListViewModel
-
-
-
     private val repository: PlaylistRepository = mock()
     private val playlists = mock<List<PlayList>>()
     private val expected = Result.success(playlists)

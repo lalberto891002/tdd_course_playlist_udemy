@@ -15,11 +15,14 @@ class PlayListRepositoryShould :BaseUnitTest() {
 
     private val exception = RuntimeException("opps Error!")
     private val service: PlayListService = mock()
+    private val mapper: PlayListMapper = mock()
     private val playlists = mock<List<PlayList>> ()
+    private val playlistsRaw = mock<List<PlayListRaw>>()
     @Test
     fun getPlaylistsFromService(): Unit = runBlocking{
 
-        val repository = PlaylistRepository(service)
+        whenever(mapper.invoke(playlistsRaw)).thenReturn(playlists)
+        val repository = PlaylistRepository(service,mapper)
 
         repository.getPlaylists()
 
@@ -30,8 +33,8 @@ class PlayListRepositoryShould :BaseUnitTest() {
     fun emitPlaylistsFromService():Unit = runBlocking {
         
         mockSuccessfulCase()
-
-        val repository = PlaylistRepository(service)
+        whenever(mapper.invoke(playlistsRaw)).thenReturn(playlists)
+        val repository = PlaylistRepository(service,mapper)
 
         assertEquals(playlists,repository.getPlaylists().first().getOrNull())
     }
@@ -40,17 +43,30 @@ class PlayListRepositoryShould :BaseUnitTest() {
     fun propagateErrors():Unit = runBlocking{
 
         mockErrorCase()
+        whenever(mapper.invoke(playlistsRaw)).thenReturn(playlists)
 
-        val  repository = PlaylistRepository(service)
+        val  repository = PlaylistRepository(service,mapper)
 
         assertEquals(exception,repository.getPlaylists().first().exceptionOrNull())
 
     }
 
+    @Test
+    fun delegateBusinessLogicToMapper():Unit = runBlocking {
+        mockSuccessfulCase()
+        whenever(mapper.invoke(playlistsRaw)).thenReturn(playlists)
+        val repository = PlaylistRepository(service,mapper)
+
+        repository.getPlaylists().first()
+
+        verify(mapper,times(1)).invoke(playlistsRaw)
+    }
+
+
     private suspend fun mockErrorCase() {
         whenever(service.fetchPlayLists()).thenReturn(
             flow {
-                emit(Result.failure<List<PlayList>>(exception))
+                emit(Result.failure<List<PlayListRaw>>(exception))
             })
     }
 
@@ -58,7 +74,7 @@ class PlayListRepositoryShould :BaseUnitTest() {
         whenever(service.fetchPlayLists()).thenReturn(
             flow {
 
-                emit(Result.success(playlists))
+                emit(Result.success(playlistsRaw))
             })
     }
 }

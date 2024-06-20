@@ -14,7 +14,7 @@ import org.junit.Test
 class PlayListServiceShould: BaseUnitTest(){
 
     private val playlistApi: PlayListApi = mock()
-    private val myPlayList =  listOf<PlayList>(PlayList("Rock1","My Song","Rock"),PlayList("Rock2","My Song2","Rock"))
+    private val myPlayList =  listOf<PlayListRaw>(PlayListRaw("Rock1","My Song","Rock"),PlayListRaw("Rock2","My Song2","Rock"))
     private val exceptionResult = Result.failure<Exception>(RuntimeException("Oops"))
     @Test
     fun getAllPlaylistsFromApi():Unit = runBlocking{

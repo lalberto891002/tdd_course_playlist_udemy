@@ -68,7 +68,10 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation ("com.google.dagger:hilt-android:2.51.1")
+
+
     annotationProcessor ("com.google.dagger:hilt-compiler:2.51.1")
+
     kapt ("com.google.dagger:hilt-android-compiler:2.51")
 
     testImplementation ("androidx.arch.core:core-testing:2.2.0")
@@ -83,5 +86,8 @@ dependencies {
 
     androidTestImplementation("junit:junit:4.13.2")
     androidTestImplementation("org.hamcrest:hamcrest-library:2.2")
+
+    implementation ("androidx.test.espresso:espresso-idling-resource:3.5.1")
+
 
 }

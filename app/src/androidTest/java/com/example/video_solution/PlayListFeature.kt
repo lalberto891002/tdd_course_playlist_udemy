@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -40,6 +41,11 @@ class PlayListFeature {
         IdlingRegistry.getInstance().register(simpleIdlingResource)
     }
 
+    @After
+    fun unregisterIdlingResource() {
+        IdlingRegistry.getInstance().unregister(simpleIdlingResource)
+    }
+
     @Test
     fun displayScreenTitle() {
         assertDisplayed("PlayLists")
@@ -64,8 +70,6 @@ class PlayListFeature {
 
     }
 
-
-
     @Test
     fun displaysRockImageForListItem(){
 
@@ -89,6 +93,15 @@ class PlayListFeature {
         unregisterIdlingResource()
         assertDisplayed(R.id.loadDisplay)
     }
+
+    @Test
+    fun navigateToDetailScreen(){
+        onView(allOf(withId(R.id.list_category), isDescendantOfA(nthChildOf(withId(R.id.list),0))))
+            .perform(click())
+
+        assertDisplayed(R.id.playlist_detail_root)
+    }
+
     fun nthChildOf(parentMatcher: Matcher<View>, childPosition: Int): Matcher<View> {
         return object : TypeSafeMatcher<View>() {
             override fun describeTo(description: Description) {
@@ -107,12 +120,11 @@ class PlayListFeature {
         }
     }
 
-    @After
-    fun unregisterIdlingResource() {
-        IdlingRegistry.getInstance().unregister(simpleIdlingResource)
-    }
+
 
 }
+
+
 
 class SimpleIdlingResource(private val resourceName: String) : IdlingResource {
 

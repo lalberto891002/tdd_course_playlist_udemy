@@ -9,5 +9,5 @@ open class BaseUnitTest {
     var coroutinesTestRule = MainDispatcherRule()
 
     @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule() //for testing live data
 }
